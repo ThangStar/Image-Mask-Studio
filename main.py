@@ -295,9 +295,9 @@ class ImageProcessor:
         self.grid_cols = 3
         self.grid_rows = 5
         self.cell_width = 180
-        self.cell_height = 50
+        self.cell_height = 45
         self.horizontal_gap = 8
-        self.vertical_gap = 55.5
+        self.vertical_gap = 60.5
     
     def mouse_wheel(self, event):
         if event.state & 0x4:  # Kiểm tra phím Ctrl
@@ -826,9 +826,9 @@ class ImageProcessor:
             cols_var = tk.StringVar(value="3")
             rows_var = tk.StringVar(value="10")
             width_var = tk.StringVar(value="175")
-            height_var = tk.StringVar(value="45")
+            height_var = tk.StringVar(value="40")
             h_gap_var = tk.StringVar(value="18")
-            v_gap_var = tk.StringVar(value="55.5")
+            v_gap_var = tk.StringVar(value="60.5")
             
             # Tạo các label và entry với font size lớn hơn và padding
             style = ttk.Style()
@@ -907,6 +907,9 @@ class ImageProcessor:
         horizontal_gap = self.horizontal_gap * self.zoom_factor
         vertical_gap = self.vertical_gap * self.zoom_factor
         
+        # Tính toán chiều cao tổng của lưới
+        total_height = self.grid_rows * (cell_height + vertical_gap) - vertical_gap
+        
         # Vẽ lưới với số cột và hàng đã cấu hình
         for row in range(self.grid_rows):
             for col in range(self.grid_cols):
@@ -928,6 +931,19 @@ class ImageProcessor:
                     'col': col,
                     'coords': (x1, y1, x2, y2)
                 })
+                
+                # Thêm đường line dọc màu xanh đi qua tâm của mỗi ô
+                if row == 0:  # Chỉ vẽ line ở hàng đầu tiên
+                    # Tính toán tâm điểm của ô
+                    center_x = x1 + cell_width/2
+                    
+                    self.canvas.create_line(
+                        center_x, self.image_offset_y, 
+                        center_x, self.image_offset_y + total_height,
+                        fill='blue',
+                        width=1,
+                        tags=('grid_line', 'grid_cell')
+                    )
         
         # Bind các sự kiện cho canvas
         self.canvas.bind('<ButtonPress-1>', self.on_grid_press)
@@ -937,6 +953,7 @@ class ImageProcessor:
     def hide_grid(self):
         """Ẩn lưới"""
         self.canvas.delete('grid_cell')
+        self.canvas.delete('grid_line')  # Thêm xóa các đường line
         self.grid_cells.clear()
 
     def on_grid_press(self, event):
@@ -982,21 +999,29 @@ class ImageProcessor:
         if not self.grid_visible or self.grid_drag_start is None:
             return
         
-        # Kiểm tra xem có phải là click đơn không
         x = self.canvas.canvasx(event.x)
         y = self.canvas.canvasy(event.y)
-        
-        # Tính khoảng cách di chuyển
         dx = abs(x - self.grid_drag_start[0])
         dy = abs(y - self.grid_drag_start[1])
         
-        # Nếu là click đơn (khoảng cách di chuyển rất nhỏ)
         if dx < 5 and dy < 5:
-            # Tìm ô được click
             items = self.canvas.find_overlapping(x-2, y-2, x+2, y+2)
             for item in items:
                 if 'grid_cell' in self.canvas.gettags(item):
-                    # Hiện dialog nhập số
+                    # Lưu vị trí hiện tại của tất cả các ô lưới và đường line
+                    current_grid_positions = []
+                    current_line_positions = []
+                    
+                    for cell in self.grid_cells:
+                        coords = self.canvas.coords(cell['id'])
+                        current_grid_positions.append(coords)
+                    
+                    # Lưu vị trí của các đường line
+                    for line in self.canvas.find_withtag('grid_line'):
+                        coords = self.canvas.coords(line)
+                        current_line_positions.append(coords)
+                    
+                    # Hiển thị dialog nhập số
                     text = simpledialog.askstring("Nhập số", "Vui lòng nhập số:")
                     if text is not None:
                         for cell in self.grid_cells:
@@ -1004,13 +1029,13 @@ class ImageProcessor:
                                 # Highlight ô được chọn
                                 self.canvas.itemconfig(item, outline='cyan', width=2)
                                 
-                                # Tạo selection cho ô này
-                                x1, y1, x2, y2 = cell['coords']
+                                # Lấy tọa độ hiện tại của ô
+                                current_coords = self.canvas.coords(item)
                                 selection = (
-                                    int((x1 - self.image_offset_x) / self.zoom_factor),
-                                    int((y1 - self.image_offset_y) / self.zoom_factor),
-                                    int((x2 - self.image_offset_x) / self.zoom_factor),
-                                    int((y2 - self.image_offset_y) / self.zoom_factor))
+                                    int((current_coords[0] - self.image_offset_x) / self.zoom_factor),
+                                    int((current_coords[1] - self.image_offset_y) / self.zoom_factor),
+                                    int((current_coords[2] - self.image_offset_x) / self.zoom_factor),
+                                    int((current_coords[3] - self.image_offset_y) / self.zoom_factor))
                                 
                                 # Vẽ hình chữ nhật trắng
                                 cv2.rectangle(
@@ -1031,21 +1056,18 @@ class ImageProcessor:
                                 temp_img = Image.new('RGBA', (width, height), (255, 255, 255, 0))
                                 draw = ImageDraw.Draw(temp_img)
                                 
-                                # Xử lý text đơn giản hơn
-                                x_offset = 0
-                                # Tính tổng chiều rộng của text
+                                # Xử lý text
                                 font = ImageFont.truetype(self.font_path, font_size)
                                 total_width = draw.textbbox((0, 0), text, font=font)[2]
-                                x_offset = (width - total_width) // 2
-                                
-                                # Tính chiều cao của text
                                 text_height = draw.textbbox((0, 0), text, font=font)[3]
+                                
+                                x_offset = (width - total_width) // 2
                                 y_pos = (height - text_height) // 2
                                 
-                                # Vẽ toàn bộ text một lần
+                                # Vẽ text
                                 draw.text((x_offset, y_pos), text, font=font, fill=color[::-1] + (255,))
                                 
-                                # Chuyển đổi sang numpy array và áp dụng lên ảnh gốc
+                                # Chuyển đổi và áp dụng lên ảnh gốc
                                 temp_array = np.array(temp_img)
                                 b, g, r, a = cv2.split(temp_array)
                                 temp_bgr = cv2.merge([b, g, r])
@@ -1059,6 +1081,20 @@ class ImageProcessor:
                                 
                                 # Cập nhật hiển thị
                                 self.update_image()
+                                
+                                # Khôi phục lưới
+                                self.show_grid()
+                                
+                                # Khôi phục vị trí cho từng ô
+                                for i, cell in enumerate(self.grid_cells):
+                                    if i < len(current_grid_positions):
+                                        self.canvas.coords(cell['id'], *current_grid_positions[i])
+                                
+                                # Khôi phục vị trí cho các đường line
+                                lines = self.canvas.find_withtag('grid_line')
+                                for i, line in enumerate(lines):
+                                    if i < len(current_line_positions):
+                                        self.canvas.coords(line, *current_line_positions[i])
                                 
                                 # Reset highlight sau 500ms
                                 self.canvas.after(500, lambda: self.canvas.itemconfig(item, outline='red', width=2))
