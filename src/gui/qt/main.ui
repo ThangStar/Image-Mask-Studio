@@ -1,0 +1,492 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Image Processing Studio</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QHBoxLayout" name="toolbarLayout">
+     <item>
+      <widget class="QPushButton" name="btnOpen">
+       <!-- For btnOpen -->
+       <property name="styleSheet">
+        <string>QPushButton { 
+          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                                  stop:0 #4B79A1, stop:1 #283E51);
+          color: white;
+          border: none;
+          padding: 8px 16px;
+          border-radius: 4px;
+          font-weight: bold;
+          letter-spacing: 0.5px;
+        }
+        QPushButton:hover { 
+          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                                  stop:0 #5689B7, stop:1 #324B62);
+        }
+        QPushButton:pressed {
+          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                                  stop:0 #406A8C, stop:1 #1F2F3D);
+        }</string>
+       </property>
+       
+       <!-- For btnSave -->
+       <property name="styleSheet">
+        <string>QPushButton { 
+          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                                  stop:0 #2C3E50, stop:1 #3498DB);
+          color: white;
+          border: none;
+          padding: 8px 16px;
+          border-radius: 4px;
+          font-weight: bold;
+          letter-spacing: 0.5px;
+        }
+        QPushButton:hover { 
+          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                                  stop:0 #34495E, stop:1 #41A7ED);
+        }
+        QPushButton:pressed {
+          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                                  stop:0 #243342, stop:1 #2980B9);
+        }</string>
+       </property>
+       
+       <!-- For btnGrid -->
+       <property name="styleSheet">
+        <string>QPushButton { 
+          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                                  stop:0 #134E5E, stop:1 #71B280);
+          color: white;
+          border: none;
+          padding: 8px 16px;
+          border-radius: 4px;
+          font-weight: bold;
+          letter-spacing: 0.5px;
+        }
+        QPushButton:hover { 
+          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                                  stop:0 #1A6171, stop:1 #82C994);
+        }
+        QPushButton:pressed {
+          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                                  stop:0 #0D3D4A, stop:1 #5F9A6B);
+        }</string>
+       </property>
+       
+       <!-- For btnTheme -->
+       <property name="styleSheet">
+        <string>QPushButton { 
+          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                                  stop:0 #373B44, stop:1 #4286f4);
+          color: white;
+          border: none;
+          padding: 8px 16px;
+          border-radius: 4px;
+          font-weight: bold;
+          letter-spacing: 0.5px;
+        }
+        QPushButton:hover { 
+          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                                  stop:0 #434750, stop:1 #5494FF);
+        }
+        QPushButton:pressed {
+          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                                  stop:0 #2B2E35, stop:1 #3573D9);
+        }</string>
+       </property>
+       
+       <!-- For bottom toolbar buttons (Rotate, Flip, Crop, Filter) -->
+       <!-- btnRotate -->
+       <property name="styleSheet">
+        <string>QPushButton { 
+          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                                  stop:0 #457fca, stop:1 #5691c8);
+          color: white;
+          border: none;
+          padding: 8px 16px;
+          border-radius: 4px;
+          font-weight: bold;
+          letter-spacing: 0.5px;
+        }
+        QPushButton:hover { 
+          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                                  stop:0 #5891DC, stop:1 #67A3DA);
+        }
+        QPushButton:pressed {
+          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                                  stop:0 #3869AB, stop:1 #477BA8);
+        }</string>
+       </property>
+       
+       <!-- btnFlip -->
+       <property name="styleSheet">
+        <string>QPushButton { 
+          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                                  stop:0 #2C3E50, stop:1 #3498DB);
+          color: white;
+          border: none;
+          padding: 8px 16px;
+          border-radius: 4px;
+          font-weight: bold;
+          letter-spacing: 0.5px;
+        }
+        QPushButton:hover { 
+          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                                  stop:0 #34495E, stop:1 #41A7ED);
+        }
+        QPushButton:pressed {
+          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                                  stop:0 #243342, stop:1 #2980B9);
+        }</string>
+       </property>
+       
+       <!-- btnCrop -->
+       <property name="styleSheet">
+        <string>QPushButton { 
+          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                                  stop:0 #134E5E, stop:1 #71B280);
+          color: white;
+          border: none;
+          padding: 8px 16px;
+          border-radius: 4px;
+          font-weight: bold;
+          letter-spacing: 0.5px;
+        }
+        QPushButton:hover { 
+          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                                  stop:0 #1A6171, stop:1 #82C994);
+        }
+        QPushButton:pressed {
+          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                                  stop:0 #0D3D4A, stop:1 #5F9A6B);
+        }</string>
+       </property>
+       
+       <!-- btnFilter -->
+       <property name="styleSheet">
+        <string>QPushButton { 
+          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                                  stop:0 #373B44, stop:1 #4286f4);
+          color: white;
+          border: none;
+          padding: 8px 16px;
+          border-radius: 4px;
+          font-weight: bold;
+          letter-spacing: 0.5px;
+        }
+        QPushButton:hover { 
+          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                                  stop:0 #434750, stop:1 #5494FF);
+        }
+        QPushButton:pressed {
+          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                                  stop:0 #2B2E35, stop:1 #3573D9);
+        }</string>
+       </property>
+       <property name="text">
+        <string>Open Image</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnSave">
+       <property name="styleSheet">
+        <string>QPushButton { 
+          background-color: transparent; 
+          color: #0d6efd; 
+          border: 2px solid #0d6efd; 
+          padding: 8px 16px; 
+          border-radius: 4px; 
+        }
+        QPushButton:hover { 
+          background-color: #0d6efd; 
+          color: white; 
+        }</string>
+       </property>
+       <property name="text">
+        <string>Save</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnGrid">
+       <property name="styleSheet">
+        <string>QPushButton { 
+          background-color: #198754; 
+          color: white; 
+          border: none; 
+          padding: 8px 16px; 
+          border-radius: 4px; 
+        }
+        QPushButton:hover { 
+          background-color: #157347; 
+        }</string>
+       </property>
+       <property name="text">
+        <string>Show Grid</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnAutoMode">
+       <property name="styleSheet">
+        <string>QPushButton { 
+          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                                    stop:0 #FF6B6B, stop:1 #4ECDC4);
+          color: white;
+          border: none;
+          padding: 8px 16px;
+          border-radius: 4px;
+          font-weight: bold;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        QPushButton:hover { 
+          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                                    stop:0 #FF8787, stop:1 #6BE5D8);
+          transform: translateY(-2px);
+        }
+        QPushButton:pressed {
+          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                                    stop:0 #E35959, stop:1 #45B8B0);
+        }</string>
+       </property>
+       <property name="text">
+        <string>Auto Mode</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnTheme">
+       <property name="styleSheet">
+        <string>QPushButton { 
+          background-color: transparent; 
+          color: #198754; 
+          border: 2px solid #198754; 
+          padding: 8px 16px; 
+          border-radius: 4px; 
+        }
+        QPushButton:hover { 
+          background-color: #198754; 
+          color: white; 
+        }</string>
+       </property>
+       <property name="text">
+        <string>Toggle Theme</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QWidget" name="infoWidget" native="true">
+     <property name="maximumSize">
+      <size>
+       <width>999</width>
+       <height>200</height>
+      </size>
+     </property>
+     <layout class="QVBoxLayout" name="infoLayout">
+      <property name="spacing">
+       <number>3</number>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>3</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>3</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="lblGridInfo">
+        <property name="styleSheet">
+         <string>QLabel { 
+           background-color: rgba(255, 255, 255, 200);
+           padding: 8px;
+           border-radius: 4px;
+           font-family: monospace;
+         }</string>
+        </property>
+        <property name="text">
+         <string>Grid Parameters</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="lblObjectParams">
+        <property name="styleSheet">
+         <string>QLabel { 
+           background-color: rgba(255, 255, 255, 200);
+           padding: 8px;
+           border-radius: 4px;
+           font-family: monospace;
+         }</string>
+        </property>
+        <property name="text">
+         <string>Object Params</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="imageLabel">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="styleSheet">
+      <string>border: 1px solid #ccc;</string>
+     </property>
+     <property name="text">
+      <string>Drop Image Here</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QFrame" name="toolsFrame">
+     <layout class="QHBoxLayout" name="toolsLayout">
+      <item>
+       <widget class="QPushButton" name="btnRotate">
+        <property name="styleSheet">
+         <string>QPushButton { 
+          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                                  stop:0 #373B44, stop:1 #4286f4);
+          color: white;
+          border: none;
+          padding: 8px 16px;
+          border-radius: 4px;
+          font-weight: bold;
+          letter-spacing: 0.5px;
+        }
+        QPushButton:hover { 
+          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                                  stop:0 #434750, stop:1 #5494FF);
+        }
+        QPushButton:pressed {
+          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                                  stop:0 #2B2E35, stop:1 #3573D9);
+        }</string>
+        </property>
+        <property name="text">
+         <string>Rotate</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnFlip">
+        <property name="styleSheet">
+         <string>QPushButton { 
+          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                                  stop:0 #373B44, stop:1 #4286f4);
+          color: white;
+          border: none;
+          padding: 8px 16px;
+          border-radius: 4px;
+          font-weight: bold;
+          letter-spacing: 0.5px;
+        }
+        QPushButton:hover { 
+          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                                  stop:0 #434750, stop:1 #5494FF);
+        }
+        QPushButton:pressed {
+          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                                  stop:0 #2B2E35, stop:1 #3573D9);
+        }</string>
+        </property>
+        <property name="text">
+         <string>Flip</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnCrop">
+        <property name="styleSheet">
+         <string>QPushButton { 
+           background-color: transparent; 
+           color: #0d6efd; 
+           border: 2px solid #0d6efd; 
+           padding: 8px 16px; 
+           border-radius: 4px; 
+         }
+         QPushButton:hover { 
+           background-color: #0d6efd; 
+           color: white; 
+         }</string>
+        </property>
+        <property name="text">
+         <string>Crop</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnFilter">
+        <property name="styleSheet">
+         <string>QPushButton { 
+           background-color: transparent; 
+           color: #0d6efd; 
+           border: 2px solid #0d6efd; 
+           padding: 8px 16px; 
+           border-radius: 4px; 
+         }
+         QPushButton:hover { 
+           background-color: #0d6efd; 
+           color: white; 
+         }</string>
+        </property>
+        <property name="text">
+         <string>pos change</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
