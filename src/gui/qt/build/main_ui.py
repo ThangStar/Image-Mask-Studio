@@ -16,8 +16,8 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QLabel,
-    QPushButton, QSizePolicy, QSpacerItem, QVBoxLayout,
-    QWidget)
+    QProgressBar, QPushButton, QSizePolicy, QSpacerItem,
+    QVBoxLayout, QWidget)
 
 class Ui_Form(object):
     def setupUi(self, Form):
@@ -60,6 +60,13 @@ class Ui_Form(object):
 
         self.verticalLayout.addLayout(self.toolbarLayout)
 
+        self.prg_bar = QProgressBar(Form)
+        self.prg_bar.setObjectName(u"prg_bar")
+        self.prg_bar.setMinimum(0)
+        self.prg_bar.setMaximum(0)
+
+        self.verticalLayout.addWidget(self.prg_bar)
+
         self.infoWidget = QWidget(Form)
         self.infoWidget.setObjectName(u"infoWidget")
         self.infoWidget.setMaximumSize(QSize(999, 200))
@@ -67,6 +74,20 @@ class Ui_Form(object):
         self.infoLayout.setSpacing(3)
         self.infoLayout.setObjectName(u"infoLayout")
         self.infoLayout.setContentsMargins(0, 3, 0, 3)
+        self.lblProcessing = QLabel(self.infoWidget)
+        self.lblProcessing.setObjectName(u"lblProcessing")
+        self.lblProcessing.setVisible(False)
+
+        self.infoLayout.addWidget(self.lblProcessing)
+
+        self.progressBar = QProgressBar(self.infoWidget)
+        self.progressBar.setObjectName(u"progressBar")
+        self.progressBar.setVisible(False)
+        self.progressBar.setMinimum(0)
+        self.progressBar.setMaximum(0)
+
+        self.infoLayout.addWidget(self.progressBar)
+
         self.lblGridInfo = QLabel(self.infoWidget)
         self.lblGridInfo.setObjectName(u"lblGridInfo")
         self.lblGridInfo.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignTop)
@@ -112,10 +133,10 @@ class Ui_Form(object):
 
         self.toolsLayout.addWidget(self.btnCrop)
 
-        self.btnFilter = QPushButton(self.toolsFrame)
-        self.btnFilter.setObjectName(u"btnFilter")
+        self.btnUpdateAtPos = QPushButton(self.toolsFrame)
+        self.btnUpdateAtPos.setObjectName(u"btnUpdateAtPos")
 
-        self.toolsLayout.addWidget(self.btnFilter)
+        self.toolsLayout.addWidget(self.btnUpdateAtPos)
 
 
         self.verticalLayout.addWidget(self.toolsFrame)
@@ -128,132 +149,6 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         Form.setWindowTitle(QCoreApplication.translate("Form", u"Image Processing Studio", None))
-        self.btnOpen.setStyleSheet(QCoreApplication.translate("Form", u"QPushButton { \n"
-"          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,\n"
-"                                  stop:0 #4B79A1, stop:1 #283E51);\n"
-"          color: white;\n"
-"          border: none;\n"
-"          padding: 8px 16px;\n"
-"          border-radius: 4px;\n"
-"          font-weight: bold;\n"
-"          letter-spacing: 0.5px;\n"
-"        }\n"
-"        QPushButton:hover { \n"
-"          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,\n"
-"                                  stop:0 #5689B7, stop:1 #324B62);\n"
-"        }\n"
-"        QPushButton:pressed {\n"
-"          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,\n"
-"                                  stop:0 #406A8C, stop:1 #1F2F3D);\n"
-"        }", None))
-        self.btnOpen.setStyleSheet(QCoreApplication.translate("Form", u"QPushButton { \n"
-"          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,\n"
-"                                  stop:0 #2C3E50, stop:1 #3498DB);\n"
-"          color: white;\n"
-"          border: none;\n"
-"          padding: 8px 16px;\n"
-"          border-radius: 4px;\n"
-"          font-weight: bold;\n"
-"          letter-spacing: 0.5px;\n"
-"        }\n"
-"        QPushButton:hover { \n"
-"          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,\n"
-"                                  stop:0 #34495E, stop:1 #41A7ED);\n"
-"        }\n"
-"        QPushButton:pressed {\n"
-"          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,\n"
-"                                  stop:0 #243342, stop:1 #2980B9);\n"
-"        }", None))
-        self.btnOpen.setStyleSheet(QCoreApplication.translate("Form", u"QPushButton { \n"
-"          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,\n"
-"                                  stop:0 #134E5E, stop:1 #71B280);\n"
-"          color: white;\n"
-"          border: none;\n"
-"          padding: 8px 16px;\n"
-"          border-radius: 4px;\n"
-"          font-weight: bold;\n"
-"          letter-spacing: 0.5px;\n"
-"        }\n"
-"        QPushButton:hover { \n"
-"          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,\n"
-"                                  stop:0 #1A6171, stop:1 #82C994);\n"
-"        }\n"
-"        QPushButton:pressed {\n"
-"          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,\n"
-"                                  stop:0 #0D3D4A, stop:1 #5F9A6B);\n"
-"        }", None))
-        self.btnOpen.setStyleSheet(QCoreApplication.translate("Form", u"QPushButton { \n"
-"          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,\n"
-"                                  stop:0 #373B44, stop:1 #4286f4);\n"
-"          color: white;\n"
-"          border: none;\n"
-"          padding: 8px 16px;\n"
-"          border-radius: 4px;\n"
-"          font-weight: bold;\n"
-"          letter-spacing: 0.5px;\n"
-"        }\n"
-"        QPushButton:hover { \n"
-"          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,\n"
-"                                  stop:0 #434750, stop:1 #5494FF);\n"
-"        }\n"
-"        QPushButton:pressed {\n"
-"          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,\n"
-"                                  stop:0 #2B2E35, stop:1 #3573D9);\n"
-"        }", None))
-        self.btnOpen.setStyleSheet(QCoreApplication.translate("Form", u"QPushButton { \n"
-"          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,\n"
-"                                  stop:0 #457fca, stop:1 #5691c8);\n"
-"          color: white;\n"
-"          border: none;\n"
-"          padding: 8px 16px;\n"
-"          border-radius: 4px;\n"
-"          font-weight: bold;\n"
-"          letter-spacing: 0.5px;\n"
-"        }\n"
-"        QPushButton:hover { \n"
-"          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,\n"
-"                                  stop:0 #5891DC, stop:1 #67A3DA);\n"
-"        }\n"
-"        QPushButton:pressed {\n"
-"          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,\n"
-"                                  stop:0 #3869AB, stop:1 #477BA8);\n"
-"        }", None))
-        self.btnOpen.setStyleSheet(QCoreApplication.translate("Form", u"QPushButton { \n"
-"          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,\n"
-"                                  stop:0 #2C3E50, stop:1 #3498DB);\n"
-"          color: white;\n"
-"          border: none;\n"
-"          padding: 8px 16px;\n"
-"          border-radius: 4px;\n"
-"          font-weight: bold;\n"
-"          letter-spacing: 0.5px;\n"
-"        }\n"
-"        QPushButton:hover { \n"
-"          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,\n"
-"                                  stop:0 #34495E, stop:1 #41A7ED);\n"
-"        }\n"
-"        QPushButton:pressed {\n"
-"          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,\n"
-"                                  stop:0 #243342, stop:1 #2980B9);\n"
-"        }", None))
-        self.btnOpen.setStyleSheet(QCoreApplication.translate("Form", u"QPushButton { \n"
-"          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,\n"
-"                                  stop:0 #134E5E, stop:1 #71B280);\n"
-"          color: white;\n"
-"          border: none;\n"
-"          padding: 8px 16px;\n"
-"          border-radius: 4px;\n"
-"          font-weight: bold;\n"
-"          letter-spacing: 0.5px;\n"
-"        }\n"
-"        QPushButton:hover { \n"
-"          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,\n"
-"                                  stop:0 #1A6171, stop:1 #82C994);\n"
-"        }\n"
-"        QPushButton:pressed {\n"
-"          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,\n"
-"                                  stop:0 #0D3D4A, stop:1 #5F9A6B);\n"
-"        }", None))
         self.btnOpen.setStyleSheet(QCoreApplication.translate("Form", u"QPushButton { \n"
 "          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,\n"
 "                                  stop:0 #373B44, stop:1 #4286f4);\n"
@@ -330,6 +225,31 @@ class Ui_Form(object):
 "          color: white; \n"
 "        }", None))
         self.btnTheme.setText(QCoreApplication.translate("Form", u"Toggle Theme", None))
+        self.prg_bar.setStyleSheet(QCoreApplication.translate("Form", u"QProgressBar {\n"
+"        border: 2px solid #0d6efd;\n"
+"        border-radius: 5px;\n"
+"        text-align: center;\n"
+"        height: 25px;\n"
+"      }\n"
+"      QProgressBar::chunk {\n"
+"        background-color: #0d6efd;\n"
+"      }", None))
+        self.lblProcessing.setStyleSheet(QCoreApplication.translate("Form", u"QLabel { \n"
+"           color: #0d6efd;\n"
+"           padding: 8px;\n"
+"           font-weight: bold;\n"
+"           font-family: monospace;\n"
+"         }", None))
+        self.lblProcessing.setText(QCoreApplication.translate("Form", u"Processing...", None))
+        self.progressBar.setStyleSheet(QCoreApplication.translate("Form", u"QProgressBar {\n"
+"           border: 2px solid #0d6efd;\n"
+"           border-radius: 5px;\n"
+"           text-align: center;\n"
+"           height: 25px;\n"
+"         }\n"
+"         QProgressBar::chunk {\n"
+"           background-color: #0d6efd;\n"
+"         }", None))
         self.lblGridInfo.setStyleSheet(QCoreApplication.translate("Form", u"QLabel { \n"
 "           background-color: rgba(255, 255, 255, 200);\n"
 "           padding: 8px;\n"
@@ -396,7 +316,7 @@ class Ui_Form(object):
 "           color: white; \n"
 "         }", None))
         self.btnCrop.setText(QCoreApplication.translate("Form", u"Crop", None))
-        self.btnFilter.setStyleSheet(QCoreApplication.translate("Form", u"QPushButton { \n"
+        self.btnUpdateAtPos.setStyleSheet(QCoreApplication.translate("Form", u"QPushButton { \n"
 "           background-color: transparent; \n"
 "           color: #0d6efd; \n"
 "           border: 2px solid #0d6efd; \n"
@@ -407,6 +327,6 @@ class Ui_Form(object):
 "           background-color: #0d6efd; \n"
 "           color: white; \n"
 "         }", None))
-        self.btnFilter.setText(QCoreApplication.translate("Form", u"Filters", None))
+        self.btnUpdateAtPos.setText(QCoreApplication.translate("Form", u"Update At Pos", None))
     # retranslateUi
 

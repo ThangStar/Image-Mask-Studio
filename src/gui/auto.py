@@ -1,15 +1,18 @@
 from PySide6.QtWidgets import QWidget, QFileDialog, QMessageBox, QInputDialog, QApplication
-from PySide6.QtCore import QRect, Qt
+from PySide6.QtCore import QRect, Qt, QThread, Signal
 from PySide6.QtGui import QDesktopServices, QGuiApplication, QImage, QPixmap, QPainter, QPen, QColor, QFont, QFontDatabase, QScreen
+import json
+from service.number_detection import number_detect
 from .qt.build.main_ui import Ui_Form
 import os
 from .preview_image import PreviewDialog
-
+from dotenv import load_dotenv
 class HomeWindow(QWidget):
     def __init__(self):
         super().__init__()
         self.ui = Ui_Form()
         self.ui.setupUi(self)
+        
         self.ui.imageLabel.setMinimumSize(600, 800)
         self.ui.imageLabel.setScaledContents(True)
         self.ui.imageLabel.setAlignment(Qt.AlignCenter)
@@ -31,6 +34,7 @@ class HomeWindow(QWidget):
         self.show_grid = True
         self.dark_mode = False
         self.hide_grid = False
+        self.ui.prg_bar.setVisible(False)
         
         # Load default image
         default_image_path = "default.jpg"
@@ -50,7 +54,10 @@ class HomeWindow(QWidget):
         self.grid_cells = {}  # Store cell values
         self.initialize_grid_cells()  # Initialize cell numbers
         self.selected_cells = {}  # Track all modified cells with their positions
+        self.curr_file_path = ""
+       
         self.update_image_display()  # Add this line to show the default image
+    
 
     def initialize_grid_cells(self):
         # Initialize empty grid cells (no default numbers)
@@ -90,7 +97,8 @@ class HomeWindow(QWidget):
         self.ui.btnRotate.clicked.connect(self.rotate_image)
         self.ui.btnFlip.clicked.connect(self.flip_image)
         self.ui.btnCrop.clicked.connect(self.crop_image)
-        self.ui.btnFilter.clicked.connect(self.apply_filters)
+        self.ui.btnUpdateAtPos.clicked.connect(self.update_at_pos)
+        self.ui.btnAutoMode.clicked.connect(self.auto_mode)
 
     def get_light_theme(self):
         return """
@@ -145,6 +153,7 @@ class HomeWindow(QWidget):
         )
         if file_name:
             self.current_image = QImage(file_name)
+            self.curr_file_path = file_name  # Store the selected file path
             image_width = self.current_image.width()
             image_height = self.current_image.height()
             self.ui.imageLabel.setFixedSize(image_width, image_height)
@@ -259,6 +268,34 @@ class HomeWindow(QWidget):
 
         self.update_image_display()
 
+    def set_grid_cell_value(self, row, col, value):
+        """
+        Programmatically set value for a specific grid cell
+        row: row index (0-based)
+        col: column index (0-based)
+        value: value to set in the cell
+        """
+        if 0 <= row < self.grid_rows and 0 <= col < self.grid_cols:
+            cell_index = row * self.grid_cols + col
+            
+            # Calculate cell rectangle for visual update
+            label_rect = self.ui.imageLabel.rect()
+            total_width = (self.cell_width * self.grid_cols) + (self.horizontal_gap * (self.grid_cols - 1))
+            total_height = (self.cell_height * self.grid_rows) + (self.vertical_gap * (self.grid_rows - 1))
+            start_x = (label_rect.width() - total_width) // 2 + self.grid_offset_x
+            start_y = (label_rect.height() - total_height) // 2 + self.grid_offset_y
+            
+            cell_x = start_x + col * (self.cell_width + self.horizontal_gap)
+            cell_y = start_y + row * (self.cell_height + self.vertical_gap)
+            cell_rect = QRect(cell_x, cell_y, self.cell_width, self.cell_height)
+            
+            # Update cell value and rectangle
+            self.grid_cells[cell_index] = str(value)
+            self.selected_cells[cell_index] = cell_rect
+            self.update_image_display()
+            return True
+        return False
+
     def keyPressEvent(self, event):
         if not self.show_grid:
             return
@@ -295,6 +332,13 @@ class HomeWindow(QWidget):
                 self.vertical_gap = max(0, self.vertical_gap - 1)  # Decrease gap (min 0)
             else:
                 self.vertical_gap += 1  # Increase gap
+        elif event.key() == Qt.Key_Plus:  # Add column with plus key
+            self.grid_rows += 1
+            self.update_image_display()
+        elif event.key() == Qt.Key_Minus:  # Remove column with minus key
+            if self.grid_rows > 1:  # Prevent having less than 1 column
+                self.grid_rows -= 1
+            self.update_image_display()
         else:
             return
 
@@ -392,8 +436,66 @@ Vertical Gap: {self.vertical_gap}px"""
     def crop_image(self):
         # Implementation for image cropping
         pass
+    # Add this new class above HomeWindow
+   
+    
+    # In HomeWindow class, update the auto_mode method:
+    def auto_mode(self):
+        class NumberDetectionThread(QThread):
+            finished = Signal(object)  # Signal to emit results
+        
+            def __init__(self, image_path):
+                super().__init__()
+                self.image_path = image_path
+        
+            def run(self):
+                try:
+                    result = number_detect(self.image_path)
+                    self.finished.emit(result)
+                except Exception as e:
+                    print(f"Error in detection thread: {e}")
+                    self.finished.emit(None)
+        if not self.curr_file_path:
+            print("No image loaded")
+            return
+        
+        print("DETECTING...")
+        self.ui.btnAutoMode.setEnabled(False)  # Disable button while processing
+        self.ui.prg_bar.setVisible(True)  # Show progress bar
+        
+        # Create and start detection thread
+        self.detection_thread = NumberDetectionThread(self.curr_file_path)
+        self.detection_thread.finished.connect(self.handle_detection_result)
+        self.detection_thread.start()
 
-    def apply_filters(self):
+    def handle_detection_result(self, res):
+        self.ui.btnAutoMode.setEnabled(True)  # Re-enable button
+        self.ui.prg_bar.setVisible(False)  # Hide progress bar
+        
+        try:
+            if not res:
+                print("Error: Empty response from number_detect")
+                return
+                
+            if isinstance(res, str):
+                clean_res = res.replace('```json\n', '').replace('\n```', '').strip()
+                data = json.loads(clean_res)
+            else:
+                data = res
+            for item in data:
+                print(item)
+                row = item["row"]
+                col = item["col"]
+                value = item["value"]
+                self.set_grid_cell_value(int(row), int(col), value)
+        except json.JSONDecodeError as e:
+            print(f"JSON parsing error: {e}")
+            print(f"Received data: {repr(res)}")
+        except Exception as e:
+            print(f"Error processing data: {e}")
+        pass
+    def update_at_pos(self):
+        print(self.current_image.file)
         pass
 
     def center_window(self):

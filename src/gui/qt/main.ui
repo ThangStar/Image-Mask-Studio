@@ -18,162 +18,6 @@
     <layout class="QHBoxLayout" name="toolbarLayout">
      <item>
       <widget class="QPushButton" name="btnOpen">
-       <!-- For btnOpen -->
-       <property name="styleSheet">
-        <string>QPushButton { 
-          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
-                                  stop:0 #4B79A1, stop:1 #283E51);
-          color: white;
-          border: none;
-          padding: 8px 16px;
-          border-radius: 4px;
-          font-weight: bold;
-          letter-spacing: 0.5px;
-        }
-        QPushButton:hover { 
-          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
-                                  stop:0 #5689B7, stop:1 #324B62);
-        }
-        QPushButton:pressed {
-          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
-                                  stop:0 #406A8C, stop:1 #1F2F3D);
-        }</string>
-       </property>
-       
-       <!-- For btnSave -->
-       <property name="styleSheet">
-        <string>QPushButton { 
-          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
-                                  stop:0 #2C3E50, stop:1 #3498DB);
-          color: white;
-          border: none;
-          padding: 8px 16px;
-          border-radius: 4px;
-          font-weight: bold;
-          letter-spacing: 0.5px;
-        }
-        QPushButton:hover { 
-          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
-                                  stop:0 #34495E, stop:1 #41A7ED);
-        }
-        QPushButton:pressed {
-          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
-                                  stop:0 #243342, stop:1 #2980B9);
-        }</string>
-       </property>
-       
-       <!-- For btnGrid -->
-       <property name="styleSheet">
-        <string>QPushButton { 
-          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
-                                  stop:0 #134E5E, stop:1 #71B280);
-          color: white;
-          border: none;
-          padding: 8px 16px;
-          border-radius: 4px;
-          font-weight: bold;
-          letter-spacing: 0.5px;
-        }
-        QPushButton:hover { 
-          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
-                                  stop:0 #1A6171, stop:1 #82C994);
-        }
-        QPushButton:pressed {
-          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
-                                  stop:0 #0D3D4A, stop:1 #5F9A6B);
-        }</string>
-       </property>
-       
-       <!-- For btnTheme -->
-       <property name="styleSheet">
-        <string>QPushButton { 
-          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
-                                  stop:0 #373B44, stop:1 #4286f4);
-          color: white;
-          border: none;
-          padding: 8px 16px;
-          border-radius: 4px;
-          font-weight: bold;
-          letter-spacing: 0.5px;
-        }
-        QPushButton:hover { 
-          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
-                                  stop:0 #434750, stop:1 #5494FF);
-        }
-        QPushButton:pressed {
-          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
-                                  stop:0 #2B2E35, stop:1 #3573D9);
-        }</string>
-       </property>
-       
-       <!-- For bottom toolbar buttons (Rotate, Flip, Crop, Filter) -->
-       <!-- btnRotate -->
-       <property name="styleSheet">
-        <string>QPushButton { 
-          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
-                                  stop:0 #457fca, stop:1 #5691c8);
-          color: white;
-          border: none;
-          padding: 8px 16px;
-          border-radius: 4px;
-          font-weight: bold;
-          letter-spacing: 0.5px;
-        }
-        QPushButton:hover { 
-          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
-                                  stop:0 #5891DC, stop:1 #67A3DA);
-        }
-        QPushButton:pressed {
-          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
-                                  stop:0 #3869AB, stop:1 #477BA8);
-        }</string>
-       </property>
-       
-       <!-- btnFlip -->
-       <property name="styleSheet">
-        <string>QPushButton { 
-          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
-                                  stop:0 #2C3E50, stop:1 #3498DB);
-          color: white;
-          border: none;
-          padding: 8px 16px;
-          border-radius: 4px;
-          font-weight: bold;
-          letter-spacing: 0.5px;
-        }
-        QPushButton:hover { 
-          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
-                                  stop:0 #34495E, stop:1 #41A7ED);
-        }
-        QPushButton:pressed {
-          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
-                                  stop:0 #243342, stop:1 #2980B9);
-        }</string>
-       </property>
-       
-       <!-- btnCrop -->
-       <property name="styleSheet">
-        <string>QPushButton { 
-          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
-                                  stop:0 #134E5E, stop:1 #71B280);
-          color: white;
-          border: none;
-          padding: 8px 16px;
-          border-radius: 4px;
-          font-weight: bold;
-          letter-spacing: 0.5px;
-        }
-        QPushButton:hover { 
-          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
-                                  stop:0 #1A6171, stop:1 #82C994);
-        }
-        QPushButton:pressed {
-          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
-                                  stop:0 #0D3D4A, stop:1 #5F9A6B);
-        }</string>
-       </property>
-       
-       <!-- btnFilter -->
        <property name="styleSheet">
         <string>QPushButton { 
           background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
@@ -304,6 +148,27 @@
     </layout>
    </item>
    <item>
+    <widget class="QProgressBar" name="prg_bar">
+     <property name="minimum">
+      <number>0</number>
+     </property>
+     <property name="maximum">
+      <number>0</number>
+     </property>
+     <property name="styleSheet">
+      <string>QProgressBar {
+        border: 2px solid #0d6efd;
+        border-radius: 5px;
+        text-align: center;
+        height: 25px;
+      }
+      QProgressBar::chunk {
+        background-color: #0d6efd;
+      }</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QWidget" name="infoWidget" native="true">
      <property name="maximumSize">
       <size>
@@ -327,6 +192,48 @@
       <property name="bottomMargin">
        <number>3</number>
       </property>
+      <item>
+       <widget class="QLabel" name="lblProcessing">
+        <property name="visible">
+         <bool>false</bool>
+        </property>
+        <property name="styleSheet">
+         <string>QLabel { 
+           color: #0d6efd;
+           padding: 8px;
+           font-weight: bold;
+           font-family: monospace;
+         }</string>
+        </property>
+        <property name="text">
+         <string>Processing...</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QProgressBar" name="progressBar">
+        <property name="visible">
+         <bool>false</bool>
+        </property>
+        <property name="styleSheet">
+         <string>QProgressBar {
+           border: 2px solid #0d6efd;
+           border-radius: 5px;
+           text-align: center;
+           height: 25px;
+         }
+         QProgressBar::chunk {
+           background-color: #0d6efd;
+         }</string>
+        </property>
+        <property name="minimum">
+         <number>0</number>
+        </property>
+        <property name="maximum">
+         <number>0</number>
+        </property>
+       </widget>
+      </item>
       <item>
        <widget class="QLabel" name="lblGridInfo">
         <property name="styleSheet">
@@ -463,7 +370,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="btnFilter">
+       <widget class="QPushButton" name="btnUpdateAtPos">
         <property name="styleSheet">
          <string>QPushButton { 
            background-color: transparent; 
@@ -478,7 +385,7 @@
          }</string>
         </property>
         <property name="text">
-         <string>pos change</string>
+         <string>Update At Pos</string>
         </property>
        </widget>
       </item>
