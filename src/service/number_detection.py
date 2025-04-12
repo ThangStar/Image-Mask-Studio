@@ -7,6 +7,7 @@ from google.genai import types
 def number_detect(file_name):
     load_dotenv()
     GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+    print(GEMINI_API_KEY)
     client = genai.Client(
         api_key=GEMINI_API_KEY,
     )
@@ -85,5 +86,7 @@ chỉ trả về kết quả có tại row, col và value
         contents=contents,
         # config=generate_content_config,
     )
-    return response.text
+    res = response.text
+    print(res)
+    return res
 

@@ -15,9 +15,9 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QLabel,
-    QProgressBar, QPushButton, QSizePolicy, QSpacerItem,
-    QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QCheckBox, QFrame, QHBoxLayout,
+    QLabel, QProgressBar, QPushButton, QSizePolicy,
+    QSpacerItem, QVBoxLayout, QWidget)
 
 class Ui_Form(object):
     def setupUi(self, Form):
@@ -42,6 +42,11 @@ class Ui_Form(object):
         self.btnGrid.setObjectName(u"btnGrid")
 
         self.toolbarLayout.addWidget(self.btnGrid)
+
+        self.chkDisableAutoEndRow = QCheckBox(Form)
+        self.chkDisableAutoEndRow.setObjectName(u"chkDisableAutoEndRow")
+
+        self.toolbarLayout.addWidget(self.chkDisableAutoEndRow)
 
         self.btnAutoMode = QPushButton(Form)
         self.btnAutoMode.setObjectName(u"btnAutoMode")
@@ -191,6 +196,25 @@ class Ui_Form(object):
 "          background-color: #157347; \n"
 "        }", None))
         self.btnGrid.setText(QCoreApplication.translate("Form", u"Show Grid", None))
+        self.chkDisableAutoEndRow.setStyleSheet(QCoreApplication.translate("Form", u"QCheckBox {\n"
+"          color: #198754;\n"
+"          padding: 8px;\n"
+"          font-weight: bold;\n"
+"        }\n"
+"        QCheckBox::indicator {\n"
+"          width: 18px;\n"
+"          height: 18px;\n"
+"        }\n"
+"        QCheckBox::indicator:unchecked {\n"
+"          border: 2px solid #198754;\n"
+"          border-radius: 3px;\n"
+"        }\n"
+"        QCheckBox::indicator:checked {\n"
+"          background-color: #198754;\n"
+"          border: 2px solid #198754;\n"
+"          border-radius: 3px;\n"
+"        }", None))
+        self.chkDisableAutoEndRow.setText(QCoreApplication.translate("Form", u"Disable auto end row", None))
         self.btnAutoMode.setStyleSheet(QCoreApplication.translate("Form", u"QPushButton { \n"
 "          background: qlineargradient(x1:0, y1:0, x2:1, y2:1,\n"
 "                                    stop:0 #FF6B6B, stop:1 #4ECDC4);\n"

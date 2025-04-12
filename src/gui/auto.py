@@ -101,7 +101,6 @@ class HomeWindow(QWidget):
         self.ui.btnTheme.clicked.connect(self.toggle_theme)
         self.ui.btnRotate.clicked.connect(self.rotate_image)
         self.ui.btnFlip.clicked.connect(self.flip_image)
-        self.ui.btnReset.clicked.connect(self.reset_func)
         self.ui.btnUpdateAtPos.clicked.connect(self.update_at_pos)
         self.ui.btnAutoMode.clicked.connect(self.auto_mode)
 
@@ -537,16 +536,26 @@ Vertical Gap: {self.vertical_gap}px"""
                 return
                 
             if isinstance(res, str):
-                clean_res = res.replace('```json\n', '').replace('\n```', '').strip()
-                data = json.loads(clean_res)
+                # Extract JSON content between ```json and ```
+                json_start = res.find('```json\n') + 8
+                json_end = res.find('\n```', json_start)
+                if json_start > 7 and json_end > json_start:
+                    json_content = res[json_start:json_end].strip()
+                    data = json.loads(json_content)
+                else:
+                    data = json.loads(res)
             else:
                 data = res
+                
             for item in data:
-                print(item)
-                row = item["row"]
-                col = item["col"]
+                row = int(item["row"])
+                col = int(item["col"])
                 value = item["value"]
-                self.set_grid_cell_value(int(row), int(col), value)
+                canDraw = (not self.ui.chkDisableAutoEndRow.isChecked()) or (self.ui.chkDisableAutoEndRow.isChecked() and row != 9)
+                print(item, canDraw, row)
+                print(not self.ui.chkDisableAutoEndRow.isChecked(), self.ui.chkDisableAutoEndRow.isChecked(), row != 9)
+                if canDraw:
+                    self.set_grid_cell_value(int(row), int(col), value)
         except json.JSONDecodeError as e:
             print(f"JSON parsing error: {e}")
             print(f"Received data: {repr(res)}")

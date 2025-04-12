@@ -101,7 +101,6 @@ class HomeWindow(QWidget):
         self.ui.btnTheme.clicked.connect(self.toggle_theme)
         self.ui.btnRotate.clicked.connect(self.rotate_image)
         self.ui.btnFlip.clicked.connect(self.flip_image)
-        self.ui.btnReset.clicked.connect(self.reset_func)
         self.ui.btnUpdateAtPos.clicked.connect(self.update_at_pos)
         self.ui.btnAutoMode.clicked.connect(self.auto_mode)
 

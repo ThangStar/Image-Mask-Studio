@@ -83,6 +83,33 @@
       </widget>
      </item>
      <item>
+      <widget class="QCheckBox" name="chkDisableAutoEndRow">
+       <property name="styleSheet">
+        <string>QCheckBox {
+          color: #198754;
+          padding: 8px;
+          font-weight: bold;
+        }
+        QCheckBox::indicator {
+          width: 18px;
+          height: 18px;
+        }
+        QCheckBox::indicator:unchecked {
+          border: 2px solid #198754;
+          border-radius: 3px;
+        }
+        QCheckBox::indicator:checked {
+          background-color: #198754;
+          border: 2px solid #198754;
+          border-radius: 3px;
+        }</string>
+       </property>
+       <property name="text">
+        <string>Disable auto end row</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="btnAutoMode">
        <property name="styleSheet">
         <string>QPushButton { 
